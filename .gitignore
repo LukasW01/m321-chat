@@ -1,5 +1,5 @@
 # Gradle
-.gradle/
+frontend/.gradle/
 build/
 
 # Eclipse
