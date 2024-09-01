@@ -1,0 +1,24 @@
+<div class="box">
+    <div class="is-flex is-align-items-center">
+        <i class="fa-solid fa-user-large pr-3" x-show="!editing"></i>
+        <p class="is-flex-grow-1" x-show="!editing"><span x-text="username ? username : 'Unknown'"></span></p>
+        <button class="button is-info" @click="editing = !editing" x-show="!editing">Edit</button>
+    </div>
+
+    <div x-show="editing" class="field is-grouped">
+        <div class="control is-expanded">
+            <input
+                    type="text"
+                    class="input"
+                    x-model="username"
+                    @blur="editing = false"
+                    @keyup.enter="editing = false"
+                    placeholder="Enter username"
+                    required
+            />
+        </div>
+        <div class="control">
+            <button class="button is-primary" @click="editing = !editing">Save</button>
+        </div>
+    </div>
+</div>

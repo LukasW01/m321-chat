@@ -1,0 +1,16 @@
+<html lang="en" xmlns:hx-on="http://www.w3.org/1999/xhtml">
+{#include head/}
+
+<body>
+{#include nav/}
+<div id="main" class="fh" x-data="{ editing: $persist(false), username: $persist('') }" hx-ext="ws" ws-connect="/gateway">
+    <div class="section p-3 fh">
+        <div id="chatarea">
+            {#include user_input/}
+            {#include chat/}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
