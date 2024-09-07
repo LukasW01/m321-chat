@@ -6,7 +6,7 @@
 <div id="main" class="fh" x-data="{ editing: $persist(false), username: $persist('') }" hx-ext="ws" ws-connect="/gateway">
     <div class="section p-3 fh">
         <div id="chatarea">
-            {#include user_input/}
+            {#include input/}
             {#include chat/}
         </div>
     </div>

@@ -8,3 +8,8 @@ data class Message(
     val message: String,
     val timestamp: String = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 )
+
+data class WebSocketMessage(
+    val username: String = "Unknown",
+    val message: String
+)

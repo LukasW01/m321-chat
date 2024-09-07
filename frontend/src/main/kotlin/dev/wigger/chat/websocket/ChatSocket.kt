@@ -1,7 +1,7 @@
 package dev.wigger.chat.websocket
 
-import com.beust.klaxon.Klaxon
 import dev.wigger.chat.dto.Message
+import dev.wigger.chat.dto.WebSocketMessage
 import dev.wigger.chat.templates.Templates
 import io.quarkus.websockets.next.OnClose
 import io.quarkus.websockets.next.OnOpen
@@ -17,26 +17,19 @@ import jakarta.inject.Inject
 class ChatSocket {
     @Inject
     private lateinit var connection: WebSocketConnection
-
-    enum class MessageType { USER_JOINED, USER_LEFT }
-
-    @JvmRecord
-    data class ChatMessage(val type: MessageType, val message: String?)
     
     @OnOpen(broadcast = true)
-    fun onOpen(): ChatMessage {
-        return ChatMessage(MessageType.USER_JOINED, null)
+    fun onOpen(): String {
+        return Templates.message("User joined", " ").render()
     }
 
     @OnClose
     fun onClose() {
-        connection.broadcast().sendTextAndAwait(ChatMessage(MessageType.USER_LEFT, null))
+        connection.broadcast().sendTextAndAwait(Templates.message("User left", " ").render())
     }
 
     @OnTextMessage(broadcast = true)
-    fun onMessage(m: String): String {
-        val json = Klaxon().parse<Message>(m)!!
-        
-        return Templates.message(json.message, json.username).render()
+    fun onMessage(w: WebSocketMessage): String {
+        return Templates.message(w.message, w.username).render()
     }
 }

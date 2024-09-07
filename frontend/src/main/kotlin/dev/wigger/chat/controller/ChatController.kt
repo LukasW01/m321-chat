@@ -12,7 +12,6 @@ import jakarta.ws.rs.core.MediaType
 @Path("/")
 class ChatController {
     @GET
-    @Path("chat")
     @Produces(MediaType.TEXT_HTML) @Consumes(MediaType.TEXT_PLAIN)
     fun index(): String = Templates.index().render()
 }
