@@ -1,6 +1,6 @@
 - name: DIKTAT_COMMON
   configuration:
-    domainName: dev.wigger.mood
+    domainName: dev.wigger.chat
     disabledChapters: "Comments"
     kotlinVersion: 1.9
 - name: MAGIC_NUMBER

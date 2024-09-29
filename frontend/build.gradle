@@ -2,7 +2,12 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version "2.0.10"
     id "org.jetbrains.kotlin.plugin.allopen" version "2.0.10"
     id 'io.quarkus'
+    id "com.saveourtool.diktat" version "2.0.0"
+    id "com.diffplug.spotless" version "6.25.0"
 }
+
+group 'chat'
+version '0.5'
 
 repositories {
     mavenCentral()
@@ -24,8 +29,12 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured'
 }
 
-group 'org.acme'
-version '1.0.0-SNAPSHOT'
+allOpen {
+    annotation("jakarta.ws.rs.Path")
+    annotation("jakarta.enterprise.context.ApplicationScoped")
+    annotation("jakarta.persistence.Entity")
+    annotation("io.quarkus.test.junit.QuarkusTest")
+}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -35,12 +44,6 @@ java {
 test {
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
 }
-allOpen {
-    annotation("jakarta.ws.rs.Path")
-    annotation("jakarta.enterprise.context.ApplicationScoped")
-    annotation("jakarta.persistence.Entity")
-    annotation("io.quarkus.test.junit.QuarkusTest")
-}
 
 compileKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_21
@@ -49,4 +52,13 @@ compileKotlin {
 
 compileTestKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_21
+}
+
+spotless {
+    kotlin {
+        diktat().configFile("diktat-analysis.yml")
+    }
+    kotlinGradle {
+        diktat()
+    }
 }

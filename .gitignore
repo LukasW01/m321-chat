@@ -1,5 +1,5 @@
 # Gradle
-frontend/.gradle/
+.gradle/
 build/
 
 # Eclipse
@@ -41,7 +41,10 @@ nb-configuration.xml
 
 # JWT signing key
 *.pem
-src/main/resources/jwt/
+jwt/
 
 # Kotlin
 .kotlin/
+
+# Database (dir)
+db/
