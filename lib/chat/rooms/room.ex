@@ -1,4 +1,7 @@
 defmodule Chat.Rooms.Room do
+  @moduledoc """
+  The schema for the rooms.
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Chat.Messages.Message
