@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* This file is for your main application CSS */
+
+/*
+  Helps hide AlpineJS cloaking elements from the DOM
+  until its initialized.
+  @docs: https://alpinejs.dev/directives/cloak
+*/
+[x-cloak] { display: none !important; }
+
+@media (prefers-color-scheme: dark) {
+  .tile {
+    --tw-bg-opacity: 1;
+    background-color: #141b2d;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .tile {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255, 255, 255);
+  }
+}

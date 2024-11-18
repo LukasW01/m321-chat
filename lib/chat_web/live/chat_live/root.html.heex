@@ -1,0 +1,12 @@
+<ChatWeb.ChatLive.Rooms.sidebar rooms={@rooms} room={@room} live_action={@live_action} />
+
+<div class="p-4 sm:ml-64">
+  <ChatWeb.ChatLive.Room.show
+          :if={@live_action == :show}
+  messages={@streams.messages}
+  current_user={@current_user}
+  room={@room}
+  />
+</div>
+
+<.live_component module={ChatWeb.ChatLive.Message.EditForm} message={@message} id="message-edit-form" />

@@ -1,0 +1,11 @@
+{
+    "name": "chat",
+    "version": "0.5",
+    "dependencies": {
+        "@alpinejs/persist": "^3.14.3",
+        "alpinejs": "^3.14.1",
+        "alpinejs-form-validation": "^1.1.0",
+        "axios": "^1.7.7",
+        "daisyui": "^4.12.13"
+    }
+}

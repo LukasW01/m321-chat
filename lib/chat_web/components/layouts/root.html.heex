@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" class="flex flex-col h-full bg-gray-100 dark:bg-gray-900">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <%= if assigns[:page_title] do %>
+      <.live_title suffix=" · Lern Mit"><%= assigns[:page_title] || "Lern Mit" %></.live_title>
+    <% else %>
+      <.live_title>Chat</.live_title>
+    <% end %>
+    <link phx-track-static rel="stylesheet" href={"/assets/app.css?#{System.os_time(:second)}"} />
+    <script
+      defer
+      phx-track-static
+      type="text/javascript"
+      src={"/assets/app.js?#{System.os_time(:second)}"}
+    >
+    </script>
+    <link rel="icon" type="image/x-icon" href={~p"/images/logo.png"} />
+  </head>
+  <body>
+    <%= @inner_content %>
+  </body>
+</html>
