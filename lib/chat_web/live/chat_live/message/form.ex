@@ -1,4 +1,7 @@
 defmodule ChatWeb.ChatLive.Message.Form do
+  @moduledoc """
+  The form component to create a new message.
+  """
   use ChatWeb, :live_component
   import ChatWeb.CoreComponents
   alias Chat.Messages

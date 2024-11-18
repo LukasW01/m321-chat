@@ -19,8 +19,6 @@ defmodule Chat.Auth.Provider do
 
   @impl true
   def normalize(_config, user) do
-    IO.inspect(user)
-
     {:ok,
      %{
        "sub" => user["sub"],

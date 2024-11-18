@@ -1,4 +1,7 @@
 defmodule ChatWeb.ChatLive.Message.EditForm do
+  @moduledoc """
+  The form component to edit a message.
+  """
   use ChatWeb, :live_component
   alias Chat.Messages
 

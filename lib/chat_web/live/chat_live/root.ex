@@ -43,8 +43,6 @@ defmodule ChatWeb.ChatLive.Root do
   Handle the event when a new message is sent and stream_insert the message on the client
   """
   def handle_info(%{event: "new_message", payload: %{message: message}}, socket) do
-    IO.inspect(message)
-
     {:noreply,
      socket
      |> stream_insert(:messages, Messages.preload_message_sender(message))
