@@ -2,11 +2,15 @@
 
 <div class="p-4 sm:ml-64">
   <ChatWeb.ChatLive.Room.show
-          :if={@live_action == :show}
-  messages={@streams.messages}
-  current_user={@current_user}
-  room={@room}
+    :if={@live_action == :show}
+    messages={@streams.messages}
+    current_user={@current_user}
+    room={@room}
   />
 </div>
 
-<.live_component module={ChatWeb.ChatLive.Message.EditForm} message={@message} id="message-edit-form" />
+<.live_component
+  module={ChatWeb.ChatLive.Message.EditForm}
+  message={@message}
+  id="message-edit-form"
+/>

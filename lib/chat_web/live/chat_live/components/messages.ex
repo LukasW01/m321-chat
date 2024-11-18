@@ -4,12 +4,7 @@ defmodule ChatWeb.ChatLive.Messages do
 
   def list_messages(assigns) do
     ~H"""
-    <div
-      id="messages"
-      phx-update="stream"
-      class="overflow-scroll"
-      style="height: calc(88vh - 10rem)"
-    >
+    <div id="messages" phx-update="stream" class="overflow-scroll" style="height: calc(88vh - 10rem)">
       <div
         :for={{dom_id, message} <- @messages}
         id={dom_id}
@@ -39,7 +34,11 @@ defmodule ChatWeb.ChatLive.Messages do
           <%= @message.sender.name %>
           <span style="font-weight: 300">[<%= @message.inserted_at %>]</span>
           <%= if @message.sender_id == @current_user.id do %>
-            <.delete_icon id={"message-#{@message.id}-buttons"} phx_click="delete_message" value={@message.id} />
+            <.delete_icon
+              id={"message-#{@message.id}-buttons"}
+              phx_click="delete_message"
+              value={@message.id}
+            />
           <% end %>
         </dt>
       </div>

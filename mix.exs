@@ -72,7 +72,7 @@ defmodule Chat.MixProject do
       {:phoenix_pubsub, "~> 2.1"},
       {:let_me, "~> 1.2.4"},
       {:sentry, "~> 10.8.0"},
-      {:hackney, "~> 1.8"},
+      {:hackney, "~> 1.8"}
     ]
   end
 

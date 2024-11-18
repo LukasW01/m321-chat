@@ -27,17 +27,17 @@ defmodule ChatWeb.ChatLive.Message.EditForm do
   """
   def update(%{message: message} = assigns, socket) do
     {:ok,
-      socket
-      |> assign(assigns)
-      |> assign_new(:form, fn ->
-        to_form(Messages.change_message(message))
-      end)}
+     socket
+     |> assign(assigns)
+     |> assign_new(:form, fn ->
+       to_form(Messages.change_message(message))
+     end)}
   end
 
   @doc """
   Update the message content and hide the modal
   """
-  def handle_event("update",  %{"content" => content}, socket) do
+  def handle_event("update", %{"content" => content}, socket) do
     Messages.update_message(socket.assigns.message, %{content: content})
 
     {:noreply, socket}

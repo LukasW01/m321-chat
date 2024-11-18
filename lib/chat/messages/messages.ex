@@ -21,13 +21,20 @@ defmodule Chat.Messages do
   def list_message do
     Repo.all(Message)
   end
-  
+
   def list_message(id) do
-    Repo.all(from m in Message, where: m.room_id == ^id, order_by: [asc: m.inserted_at], preload: [:sender])
+    Repo.all(
+      from m in Message,
+        where: m.room_id == ^id,
+        order_by: [asc: m.inserted_at],
+        preload: [:sender]
+    )
   end
-  
+
   def last_ten_messages(id) do
-    Repo.all(from m in Message, where: m.room_id == ^id, order_by: [desc: m.inserted_at], limit: 10)
+    Repo.all(
+      from m in Message, where: m.room_id == ^id, order_by: [desc: m.inserted_at], limit: 10
+    )
   end
 
   def preload_message_sender(message) do
@@ -50,9 +57,14 @@ defmodule Chat.Messages do
 
   """
   def get_message!(id), do: Repo.get!(Message, id)
-  
+
   def last_user_message_for_room(room_id, current_user_id) do
-    Repo.one(from m in Message, where: m.room_id == ^room_id and m.sender_id == ^current_user_id, order_by: [desc: m.inserted_at], limit: 1)
+    Repo.one(
+      from m in Message,
+        where: m.room_id == ^room_id and m.sender_id == ^current_user_id,
+        order_by: [desc: m.inserted_at],
+        limit: 1
+    )
   end
 
   @doc """
@@ -72,8 +84,8 @@ defmodule Chat.Messages do
     |> Message.changeset(attrs)
     |> Repo.insert()
     |> case do
-       {:ok, message} ->
-         Endpoint.broadcast("room:#{message.room_id}", "new_message", %{message: message})
+      {:ok, message} ->
+        Endpoint.broadcast("room:#{message.room_id}", "new_message", %{message: message})
     end
   end
 
@@ -94,8 +106,8 @@ defmodule Chat.Messages do
     |> Message.changeset(attrs)
     |> Repo.update()
     |> case do
-       {:ok, message} ->
-         Endpoint.broadcast("room:#{message.room_id}", "updated_message", %{message: message})
+      {:ok, message} ->
+        Endpoint.broadcast("room:#{message.room_id}", "updated_message", %{message: message})
     end
   end
 
@@ -114,8 +126,8 @@ defmodule Chat.Messages do
   def delete_message(%Message{} = message) do
     Repo.delete(message)
     |> case do
-       {:ok, message} ->
-         Endpoint.broadcast("room:#{message.room_id}", "deleted_message", %{message: message.id})
+      {:ok, message} ->
+        Endpoint.broadcast("room:#{message.room_id}", "deleted_message", %{message: message.id})
     end
   end
 

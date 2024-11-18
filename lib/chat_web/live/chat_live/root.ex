@@ -11,12 +11,11 @@ defmodule ChatWeb.ChatLive.Root do
   """
   def mount(_params, _session, socket) do
     {:ok,
-      socket
-      |> assign(:rooms, Rooms.list_rooms())
-      |> assign(:room, nil)
-      |> assign(:message, %Messages.Message{})
-      |> assign(:current_user, socket.assigns.current_user)
-    }
+     socket
+     |> assign(:rooms, Rooms.list_rooms())
+     |> assign(:room, nil)
+     |> assign(:message, %Messages.Message{})
+     |> assign(:current_user, socket.assigns.current_user)}
   end
 
   @doc """
@@ -26,13 +25,13 @@ defmodule ChatWeb.ChatLive.Root do
   """
   def handle_params(%{"id" => id}, _uri, %{assigns: %{live_action: :show}} = socket) do
     if connected?(socket), do: Endpoint.subscribe("room:#{id}")
-    
+
     {:noreply,
-      socket
-      |> assign(:room, Rooms.get_room!(id))
-      |> stream(:messages, Messages.list_message(id))
-      |> last_user_message()
-      |> assign(:current_user, socket.assigns.current_user)}
+     socket
+     |> assign(:room, Rooms.get_room!(id))
+     |> stream(:messages, Messages.list_message(id))
+     |> last_user_message()
+     |> assign(:current_user, socket.assigns.current_user)}
   end
 
   @doc """
@@ -45,10 +44,11 @@ defmodule ChatWeb.ChatLive.Root do
   """
   def handle_info(%{event: "new_message", payload: %{message: message}}, socket) do
     IO.inspect(message)
+
     {:noreply,
-      socket
-      |> stream_insert(:messages, Messages.preload_message_sender(message))
-      |> last_user_message()}
+     socket
+     |> stream_insert(:messages, Messages.preload_message_sender(message))
+     |> last_user_message()}
   end
 
   @doc """
@@ -56,9 +56,9 @@ defmodule ChatWeb.ChatLive.Root do
   """
   def handle_info(%{event: "updated_message", payload: %{message: message}}, socket) do
     {:noreply,
-      socket
-      |> stream_insert(:messages, Messages.preload_message_sender(message), at: -1)
-      |> last_user_message(message)}
+     socket
+     |> stream_insert(:messages, Messages.preload_message_sender(message), at: -1)
+     |> last_user_message(message)}
   end
 
   @doc """
@@ -68,10 +68,9 @@ defmodule ChatWeb.ChatLive.Root do
     message = Messages.get_message!(message_id)
     Messages.delete_message(message)
 
-    {:noreply,
-      stream_delete(socket, :messages, message)}
+    {:noreply, stream_delete(socket, :messages, message)}
   end
-  
+
   @doc """
   Assign the last message sent by the current user
   """
@@ -84,6 +83,10 @@ defmodule ChatWeb.ChatLive.Root do
   Assign the last message sent by the current user in case the message is not the last one
   """
   def last_user_message(%{assigns: %{room: room, current_user: current_user}} = socket) do
-    assign(socket, :message, Messages.last_user_message_for_room(room.id, current_user.id) || %Messages.Message{})
+    assign(
+      socket,
+      :message,
+      Messages.last_user_message_for_room(room.id, current_user.id) || %Messages.Message{}
+    )
   end
 end

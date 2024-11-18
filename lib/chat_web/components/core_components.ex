@@ -196,8 +196,8 @@ defmodule ChatWeb.CoreComponents do
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
 
   attr :rest, :global,
-       include: ~w(autocomplete name rel action enctype method novalidate target multipart),
-       doc: "the arbitrary HTML attributes to apply to the form tag"
+    include: ~w(autocomplete name rel action enctype method novalidate target multipart),
+    doc: "the arbitrary HTML attributes to apply to the form tag"
 
   slot :inner_block, required: true
   slot :actions, doc: "the slot for form actions, such as a submit button"
@@ -304,12 +304,12 @@ defmodule ChatWeb.CoreComponents do
   attr :value, :any
 
   attr :type, :string,
-       default: "text",
-       values: ~w(checkbox color date datetime-local email file month number password
+    default: "text",
+    values: ~w(checkbox color date datetime-local email file month number password
                range search select tel text textarea time url week)
 
   attr :field, Phoenix.HTML.FormField,
-       doc: "a form field struct retrieved from the form, for example: @form[:email]"
+    doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :errors, :list, default: []
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
@@ -318,7 +318,7 @@ defmodule ChatWeb.CoreComponents do
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
   attr :rest, :global,
-       include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
+    include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step)
 
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
@@ -487,8 +487,8 @@ defmodule ChatWeb.CoreComponents do
   attr :row_click, :any, default: nil, doc: "the function for handling phx-click on each row"
 
   attr :row_item, :any,
-       default: &Function.identity/1,
-       doc: "the function for mapping each row before calling the :col and :action slots"
+    default: &Function.identity/1,
+    doc: "the function for mapping each row before calling the :col and :action slots"
 
   slot :col, required: true do
     attr :label, :string
@@ -668,8 +668,8 @@ defmodule ChatWeb.CoreComponents do
       time: 0,
       transition:
         {"transition-all transform ease-out duration-300",
-        "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
-        "opacity-100 translate-y-0 sm:scale-100"}
+         "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
+         "opacity-100 translate-y-0 sm:scale-100"}
     )
   end
 
@@ -679,8 +679,8 @@ defmodule ChatWeb.CoreComponents do
       time: 200,
       transition:
         {"transition-all transform ease-in duration-200",
-        "opacity-100 translate-y-0 sm:scale-100",
-        "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}
+         "opacity-100 translate-y-0 sm:scale-100",
+         "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}
     )
   end
 
@@ -688,10 +688,10 @@ defmodule ChatWeb.CoreComponents do
     js
     |> JS.show(to: "##{id}")
     |> JS.show(
-         to: "##{id}-bg",
-         time: 300,
-         transition: {"transition-all transform ease-out duration-300", "opacity-0", "opacity-100"}
-       )
+      to: "##{id}-bg",
+      time: 300,
+      transition: {"transition-all transform ease-out duration-300", "opacity-0", "opacity-100"}
+    )
     |> show("##{id}-container")
     |> JS.add_class("overflow-hidden", to: "body")
     |> JS.focus_first(to: "##{id}-content")
@@ -700,9 +700,9 @@ defmodule ChatWeb.CoreComponents do
   def hide_modal(js \\ %JS{}, id) do
     js
     |> JS.hide(
-         to: "##{id}-bg",
-         transition: {"transition-all transform ease-in duration-200", "opacity-100", "opacity-0"}
-       )
+      to: "##{id}-bg",
+      transition: {"transition-all transform ease-in duration-200", "opacity-100", "opacity-0"}
+    )
     |> hide("##{id}-container")
     |> JS.hide(to: "##{id}", transition: {"block", "block", "hidden"})
     |> JS.remove_class("overflow-hidden", to: "body")

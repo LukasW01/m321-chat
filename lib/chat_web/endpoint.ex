@@ -13,18 +13,18 @@ defmodule ChatWeb.Endpoint do
   ]
 
   socket "/live", Phoenix.LiveView.Socket,
-         websocket: [connect_info: [session: @session_options]],
-         longpoll: [connect_info: [session: @session_options]]
+    websocket: [connect_info: [session: @session_options]],
+    longpoll: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
   plug Plug.Static,
-       at: "/",
-       from: :chat,
-       gzip: false,
-       only: ChatWeb.static_paths()
+    at: "/",
+    from: :chat,
+    gzip: false,
+    only: ChatWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -36,16 +36,16 @@ defmodule ChatWeb.Endpoint do
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,
-       param_key: "request_logger",
-       cookie_key: "request_logger"
+    param_key: "request_logger",
+    cookie_key: "request_logger"
 
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
   plug Plug.Parsers,
-       parsers: [:urlencoded, :multipart, :json],
-       pass: ["*/*"],
-       json_decoder: Phoenix.json_library()
+    parsers: [:urlencoded, :multipart, :json],
+    pass: ["*/*"],
+    json_decoder: Phoenix.json_library()
 
   plug Sentry.PlugContext
   plug Plug.MethodOverride
