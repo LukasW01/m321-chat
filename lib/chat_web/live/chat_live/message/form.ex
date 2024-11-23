@@ -11,7 +11,7 @@ defmodule ChatWeb.ChatLive.Message.Form do
     <div>
       <.simple_form
         :let={f}
-        for={@changeset}
+        for={@form}
         phx-submit="save"
         phx-change="update"
         phx-target={@myself}
@@ -34,36 +34,43 @@ defmodule ChatWeb.ChatLive.Message.Form do
   end
 
   @doc """
-  Initialize the changeset with the message content
+  Initialize the changeset with an empty message content
   """
   def update(assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, Messages.change_message(%Messages.Message{}))}
+     |> assign(:form, Messages.change_message(%Messages.Message{}))}
   end
 
   @doc """
-  Check if the message content is updated and assign the changeset
+  Check the content of the input field and update the changeset
+    
+  Info: This will be called when the user types in the input field
   """
   def handle_event("update", %{"content" => content}, socket) do
     {:noreply,
      socket
-     |> assign(:changeset, Messages.change_message(%Messages.Message{content: content}))}
+     |> assign(:form, Messages.change_message(%Messages.Message{content: content}))}
   end
 
   @doc """
   Create a new message and assign an empty changeset (clear the form)
+    
+  Hint: The create_message function will broadcast the new message to the room channel
   """
   def handle_event("save", %{"content" => content}, socket) do
-    Messages.create_message(%{
-      content: content,
-      room_id: socket.assigns.room_id,
-      sender_id: socket.assigns.sender_id
-    })
-
-    {:noreply,
-     socket
-     |> assign(:changeset, Messages.change_message(%Messages.Message{}))}
+    case Messages.create_message(%{
+           content: content,
+           room_id: socket.assigns.room_id,
+           sender_id: socket.assigns.sender_id
+         }) do
+      :ok ->
+        {:noreply,
+         socket
+         |> assign(:form, Messages.change_message(%Messages.Message{}))}
+      {:error, changeset} ->
+        {:noreply, assign(socket, form: to_form(changeset))}
+    end
   end
 end

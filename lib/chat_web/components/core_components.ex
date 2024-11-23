@@ -724,9 +724,9 @@ defmodule ChatWeb.CoreComponents do
     # with our gettext backend as first argument. Translations are
     # available in the errors.po file (as we use the "errors" domain).
     if count = opts[:count] do
-      Gettext.dngettext(LernmitWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(ChatWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(LernmitWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(ChatWeb.Gettext, "errors", msg, opts)
     end
   end
 

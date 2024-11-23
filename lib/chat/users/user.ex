@@ -5,7 +5,6 @@ defmodule Chat.Users.User do
   use Ecto.Schema
   use Pow.Ecto.Schema
   use PowAssent.Ecto.Schema
-  import Ecto.Changeset
 
   schema "users" do
     pow_user_fields()

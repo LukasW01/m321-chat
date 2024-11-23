@@ -41,8 +41,11 @@ defmodule ChatWeb.ChatLive.Message.EditForm do
   Update the message content and hide the modal
   """
   def handle_event("update", %{"content" => content}, socket) do
-    Messages.update_message(socket.assigns.message, %{content: content})
-
-    {:noreply, socket}
+    case Messages.update_message(socket.assigns.message, %{content: content}) do
+      {:ok, message} ->
+        {:noreply, socket}
+      {:error, changeset} ->
+        {:noreply, assign(socket, form: to_form(changeset))}
+    end
   end
 end

@@ -6,8 +6,8 @@ defmodule ChatWeb.ChatLive.Root do
 
   @doc """
   Mount the live view and assign the rooms and the last user message.
-
-  The last_user_message is used for the message edit form to show the last message sent by the current user.
+    
+  Info: The last_user_message is used for the message edit form to show the last message sent by the current user.
   """
   def mount(_params, _session, socket) do
     {:ok,
@@ -21,7 +21,7 @@ defmodule ChatWeb.ChatLive.Root do
   @doc """
   @route: "/rooms/:id"
 
-  Handle the params (:id) and subscribe to the room channel if the user is connected.
+  Handle the param (:id) and subscribe to the room channel if the user is not connected.
   """
   def handle_params(%{"id" => id}, _uri, %{assigns: %{live_action: :show}} = socket) do
     if connected?(socket), do: Endpoint.subscribe("room:#{id}")
@@ -57,6 +57,13 @@ defmodule ChatWeb.ChatLive.Root do
      socket
      |> stream_insert(:messages, Messages.preload_message_sender(message), at: -1)
      |> last_user_message(message)}
+  end
+
+  def handle_info(%{event: "deleted_message", payload: %{message: message}}, socket) do
+    {:noreply,
+     socket
+     |> stream_delete(:messages, %{id: message})
+     |> last_user_message()}
   end
 
   @doc """
