@@ -44,6 +44,7 @@ defmodule ChatWeb.ChatLive.Message.EditForm do
     case Messages.update_message(socket.assigns.message, %{content: content}) do
       {:ok, message} ->
         {:noreply, socket}
+
       {:error, changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end

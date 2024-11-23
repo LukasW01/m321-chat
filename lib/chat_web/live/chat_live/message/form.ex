@@ -9,13 +9,7 @@ defmodule ChatWeb.ChatLive.Message.Form do
   def render(assigns) do
     ~H"""
     <div>
-      <.simple_form
-        :let={f}
-        for={@form}
-        phx-submit="save"
-        phx-change="update"
-        phx-target={@myself}
-      >
+      <.simple_form :let={f} for={@form} phx-submit="save" phx-change="update" phx-target={@myself}>
         <.input
           autocomplete="off"
           phx-keydown={show_modal("edit_message")}
@@ -69,6 +63,7 @@ defmodule ChatWeb.ChatLive.Message.Form do
         {:noreply,
          socket
          |> assign(:form, Messages.change_message(%Messages.Message{}))}
+
       {:error, changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end
