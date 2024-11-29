@@ -51,7 +51,7 @@ defmodule ChatWeb.ChatLive.Message.Form do
   @doc """
   Create a new message and assign an empty changeset (clear the form)
     
-  Hint: The create_message function will broadcast the new message to the room channel
+  Hint: The create_message function will broadcast the new message to the room:id channel
   """
   def handle_event("save", %{"content" => content}, socket) do
     case Messages.create_message(%{

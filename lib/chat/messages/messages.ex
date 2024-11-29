@@ -86,6 +86,9 @@ defmodule Chat.Messages do
     |> case do
       {:ok, message} ->
         Endpoint.broadcast("room:#{message.room_id}", "new_message", %{message: message})
+
+      {:error, changeset} ->
+        {:error, changeset}
     end
   end
 

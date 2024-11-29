@@ -21,7 +21,7 @@ defmodule ChatWeb.ChatLive.Root do
   @doc """
   @route: "/rooms/:id"
 
-  Handle the param (:id) and subscribe to the room channel if the user is not connected.
+  Handle the param (:id) and subscribe to the room channel if the user is not yet connected.
   """
   def handle_params(%{"id" => id}, _uri, %{assigns: %{live_action: :show}} = socket) do
     if connected?(socket), do: Endpoint.subscribe("room:#{id}")

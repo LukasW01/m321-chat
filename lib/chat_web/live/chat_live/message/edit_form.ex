@@ -39,6 +39,8 @@ defmodule ChatWeb.ChatLive.Message.EditForm do
 
   @doc """
   Update the message content and hide the modal
+    
+  Hint: The update_message function will broadcast the updated message to the room:id channel
   """
   def handle_event("update", %{"content" => content}, socket) do
     case Messages.update_message(socket.assigns.message, %{content: content}) do
