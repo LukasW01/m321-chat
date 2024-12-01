@@ -2,6 +2,8 @@ defmodule ChatWeb.ChatLive.Rooms do
   import ChatWeb.CoreComponents
   use ChatWeb, :html
 
+  alias Chat.Auth.Policy
+
   def sidebar(assigns) do
     ~H"""
     <aside
@@ -11,6 +13,9 @@ defmodule ChatWeb.ChatLive.Rooms do
     >
       <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
         <.rooms_list rooms={@rooms} room={@room} live_action={@live_action} />
+        <%= if Policy.authorize(:user_update, @current_user) == :ok do %>
+          <.button phx-click="ban" class="mt-4">Ban</.button>
+        <% end %>
       </div>
     </aside>
     """

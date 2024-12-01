@@ -2,6 +2,7 @@ defmodule ChatWeb.ChatLive.Root do
   use ChatWeb, :live_view
   alias Chat.Messages
   alias Chat.Rooms
+  alias Chat.Users
   alias ChatWeb.Endpoint
   alias Chat.Util.Ban
 
@@ -14,7 +15,8 @@ defmodule ChatWeb.ChatLive.Root do
      |> assign(:rooms, Rooms.list_rooms())
      |> assign(:room, nil)
      |> assign(:message, %Messages.Message{})
-     |> assign(:current_user, socket.assigns.current_user)}
+     |> assign(:current_user, socket.assigns.current_user)
+     |> assign(:action, :index)}
   end
 
   @doc """
@@ -98,6 +100,49 @@ defmodule ChatWeb.ChatLive.Root do
     Messages.delete_message(message)
 
     {:noreply, stream_delete(socket, :messages, message)}
+  end
+
+  @doc """
+  If the user is not authorized, close the modal
+
+  Returns either:
+    {:error} -> Unauthorized access or DB error
+    {:ok} -> [User{}]
+  """
+  def handle_event("ban", _params, socket) do
+    case Users.list_user(socket.assigns.current_user) do
+      {:ok, users} ->
+        {:noreply,
+         socket
+         |> assign(:action, :ban)
+         |> stream(:user_collection, users)}
+
+      {:error, _error} ->
+        {:ok,
+         socket
+         |> assign(:action, :index)}
+    end
+  end
+
+  @doc """
+  Handle the event when a user is banned and stream_delete the user on the client
+  """
+  @impl true
+  def handle_event("ban_user", %{"id" => id}, socket) do
+    case Users.ban(id, socket.assigns.current_user, %{ban: true}) do
+      :ok ->
+        {:noreply,
+         socket
+         |> stream_delete(:user_collection, %{id: id})
+         |> put_flash(:info, "User has been banned")}
+
+      :error ->
+        {:noreply, put_flash(socket, :error, "Failed to ban user")}
+    end
+  end
+
+  def handle_event("cancel", _params, socket) do
+    {:noreply, assign(socket, :action, :index)}
   end
 
   @doc """

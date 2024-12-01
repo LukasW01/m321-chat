@@ -5,6 +5,7 @@ defmodule Chat.Users do
 
   import Ecto.Query, warn: false
   alias Chat.Repo
+  alias ChatWeb.Endpoint
 
   alias Chat.Users.User
   alias Chat.Auth.Policy
@@ -39,9 +40,13 @@ defmodule Chat.Users do
 
   """
   def get_user!(id, %User{} = current_user) do
-    with {:ok, user} <- Policy.authorize(:user_read, %User{}) do
-      Repo.get!(User, id)
+    with :ok <- Policy.authorize(:user_read, current_user) do
+      {:ok, Repo.get!(User, id)}
     end
+  end
+
+  def get_user!(id) do
+    Repo.get!(User, id)
   end
 
   @doc """
@@ -92,9 +97,9 @@ defmodule Chat.Users do
       :error
 
   """
-  def ban(id, current_user, params) do
+  def ban(id, %User{} = current_user, params) do
     case get_user!(id, current_user) do
-      %User{} = user ->
+      {:ok, user} ->
         case update_user(user, params) do
           {:ok, _user} ->
             Endpoint.broadcast("user:#{id}", "ban", %{})

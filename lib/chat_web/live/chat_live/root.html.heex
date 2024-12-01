@@ -1,4 +1,9 @@
-<ChatWeb.ChatLive.Rooms.sidebar rooms={@rooms} room={@room} live_action={@live_action} />
+<ChatWeb.ChatLive.Rooms.sidebar
+  rooms={@rooms}
+  room={@room}
+  current_user={@current_user}
+  live_action={@live_action}
+/>
 
 <div class="p-4 sm:ml-64">
   <ChatWeb.ChatLive.Room.show
@@ -14,3 +19,20 @@
   message={@message}
   id="message-edit-form"
 />
+
+<.modal :if={@action == :ban} id="achievement" show on_cancel={JS.push("cancel")}>
+  <div class="px-4 sm:px-6 lg:px-16 pt-10 pb-20">
+    <.header>
+      User
+    </.header>
+
+    <.table id="user" rows={@streams.user_collection}>
+      <:col :let={{id, user}} label="Name"><%= user.name %></:col>
+      <:action :let={{id, user}}>
+        <.link phx-click={JS.push("ban_user", value: %{id: user.id})} data-confirm="Are you sure?">
+          Ban
+        </.link>
+      </:action>
+    </.table>
+  </div>
+</.modal>
