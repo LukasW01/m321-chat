@@ -3,11 +3,10 @@ defmodule ChatWeb.ChatLive.Root do
   alias Chat.Messages
   alias Chat.Rooms
   alias ChatWeb.Endpoint
+  alias Chat.Util.Ban
 
   @doc """
-  Mount the live view and assign the rooms and the last user message.
-    
-  Info: The last_user_message is used for the message edit form to show the last message sent by the current user.
+  Mount the live view and assign the rooms and the current user
   """
   def mount(_params, _session, socket) do
     {:ok,
@@ -20,18 +19,33 @@ defmodule ChatWeb.ChatLive.Root do
 
   @doc """
   @route: "/rooms/:id"
+  Handle the param (:id) and subscribe to the room channel if the user is not yet connected. 
 
-  Handle the param (:id) and subscribe to the room channel if the user is not yet connected.
+  If the user is banned, redirect to the rooms page with a flash message.
+
+  Info: The last_user_message is used for the message edit form to show the last message sent by the current user.
   """
   def handle_params(%{"id" => id}, _uri, %{assigns: %{live_action: :show}} = socket) do
-    if connected?(socket), do: Endpoint.subscribe("room:#{id}")
+    if Ban.is_banned?(socket.assigns.current_user.id) do
+      {:noreply,
+       socket
+       |> put_flash(:error, "You have been banned")
+       |> push_navigate(to: "/rooms")}
+    else
+      if connected?(socket) do
+        # Used to broadcast messages to the room channel
+        Endpoint.subscribe("room:#{id}")
+        # Any user specific events
+        Endpoint.subscribe("user:#{socket.assigns.current_user.id}")
+      end
 
-    {:noreply,
-     socket
-     |> assign(:room, Rooms.get_room!(id))
-     |> stream(:messages, Messages.list_message(id))
-     |> last_user_message()
-     |> assign(:current_user, socket.assigns.current_user)}
+      {:noreply,
+       socket
+       |> assign(:room, Rooms.get_room!(id))
+       |> stream(:messages, Messages.list_message(id))
+       |> last_user_message()
+       |> assign(:current_user, socket.assigns.current_user)}
+    end
   end
 
   @doc """
@@ -64,6 +78,16 @@ defmodule ChatWeb.ChatLive.Root do
      socket
      |> stream_delete(:messages, %{id: message})
      |> last_user_message()}
+  end
+
+  @doc """
+  Handle the event when a user is banned and redirect to the rooms page with a flash message
+  """
+  def handle_info(%{event: "ban", payload: %{}}, socket) do
+    {:noreply,
+     socket
+     |> put_flash(:error, "You have been banned")
+     |> push_navigate(to: "/rooms")}
   end
 
   @doc """

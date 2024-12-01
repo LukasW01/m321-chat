@@ -52,6 +52,7 @@ defmodule ChatWeb.Router do
 
     live "/rooms", ChatLive.Root, :index
     live "/rooms/:id", ChatLive.Root, :show
+    live "/user", UserLive.Index, :index
   end
 
   scope "/admin", ChatWeb do

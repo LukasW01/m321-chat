@@ -1,0 +1,14 @@
+<div class="px-4 sm:px-6 lg:px-16 pt-10 pb-20">
+  <.header>
+    User
+  </.header>
+
+  <.table id="user" rows={@streams.user_collection}>
+    <:col :let={{id, user}} label="Name"><%= user.name %></:col>
+    <:action :let={{id, user}}>
+      <.link phx-click={JS.push("ban", value: %{id: user.id})} data-confirm="Are you sure?">
+        Ban
+      </.link>
+    </:action>
+  </.table>
+</div>
