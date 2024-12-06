@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
     <%= if assigns[:page_title] do %>
-      <.live_title suffix=" · Chat"><%= assigns[:page_title] || "Chat" %></.live_title>
+      <.live_title suffix=" · Chat">{assigns[:page_title] || "Chat"}</.live_title>
     <% else %>
       <.live_title>Chat</.live_title>
     <% end %>
@@ -19,6 +19,6 @@
     </script>
   </head>
   <body>
-    <%= @inner_content %>
+    {@inner_content}
   </body>
 </html>

@@ -30,7 +30,7 @@ defmodule ChatWeb.ChatLive.Rooms do
           class={"#{if @live_action == :show && @room.id == room.id, do: "bg-blue-700"} flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"}
         >
           <.chat_icon />
-          <span class="ml-3"><%= room.name %></span>
+          <span class="ml-3">{room.name}</span>
         </.link>
       </li>
     </ul>

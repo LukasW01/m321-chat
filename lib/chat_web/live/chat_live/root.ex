@@ -4,7 +4,7 @@ defmodule ChatWeb.ChatLive.Root do
   alias Chat.Rooms
   alias Chat.Users
   alias ChatWeb.Endpoint
-  alias Chat.Util.Ban
+  alias Chat.Util.User
 
   @doc """
   Mount the live view and assign the rooms and the current user
@@ -28,7 +28,7 @@ defmodule ChatWeb.ChatLive.Root do
   Info: The last_user_message is used for the message edit form to show the last message sent by the current user.
   """
   def handle_params(%{"id" => id}, _uri, %{assigns: %{live_action: :show}} = socket) do
-    if Ban.is_banned?(socket.assigns.current_user.id) do
+    if User.ban?(socket.assigns.current_user.id) do
       {:noreply,
        socket
        |> put_flash(:error, "You have been banned")
