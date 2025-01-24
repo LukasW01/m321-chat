@@ -5,7 +5,7 @@ defmodule Chat.Auth.Policy.Checks do
   alias Chat.Users.User
 
   @doc """
-  Checks whether the user ID of the object matches the ID of the current user.
+  Checks whether the user ID of the struct matches the ID of the current user.
   case Tasks.list_task(socket.assigns.current_user) do
   {:ok, tasks} ->
     {:ok, stream(socket, :task_collection, tasks)}

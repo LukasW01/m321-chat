@@ -7,9 +7,23 @@ defmodule Chat.Auth.Policy do
   use LetMe.Policy
 
   object :user do
-    action [:delete, :update, :read, :create] do
+    action [:create, :read, :update, :delete] do
       allow role: "admin"
       deny role: "user"
+    end
+  end
+
+  object :room do
+    action [:create, :read, :update, :delete] do
+      allow role: "admin"
+      allow role: "user"
+    end
+  end
+
+  object :message do
+    action [:create, :read, :update, :delete] do
+      allow role: "admin"
+      allow role: "user"
     end
   end
 end
